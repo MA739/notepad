@@ -5,6 +5,9 @@ Login Credentials
   Pass: testdummy1
 
 You can also register a new user, if need to.
+
+Currently, the main page is just a placeholder and needs additional functionality
+
 ## Getting Started
 
 This project is a starting point for a Flutter application.
