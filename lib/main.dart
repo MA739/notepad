@@ -1,12 +1,23 @@
 import 'package:flutter/material.dart';
+import 'firestore_services.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_core/firebase_core.dart';
+import 'package:date_format/date_format.dart';
 
-void main() {
-  runApp(const MyApp());
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  await Firebase.initializeApp();
+  //declare class from imported file
+
+  runApp(MyApp());
 }
 
-class MyApp extends StatelessWidget {
-  const MyApp({Key? key}) : super(key: key);
+//creates instance of imported FireBaseService Class
+FirebaseService service = FirebaseService();
+//FirebaseStorage storage = FirebaseStorage.instance;
 
+class MyApp extends StatelessWidget {
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
@@ -24,92 +35,292 @@ class MyApp extends StatelessWidget {
         // is not restarted.
         primarySwatch: Colors.blue,
       ),
-      home: const MyHomePage(title: 'Flutter Demo Home Page'),
+      home: new LoginPage(),
     );
   }
 }
 
-class MyHomePage extends StatefulWidget {
-  const MyHomePage({Key? key, required this.title}) : super(key: key);
-
-  // This widget is the home page of your application. It is stateful, meaning
-  // that it has a State object (defined below) that contains fields that affect
-  // how it looks.
-
-  // This class is the configuration for the state. It holds the values (in this
-  // case the title) provided by the parent (in this case the App widget) and
-  // used by the build method of the State. Fields in a Widget subclass are
-  // always marked "final".
-
-  final String title;
-
+class LoginPage extends StatefulWidget {
+  const LoginPage({Key? key}) : super(key: key);
   @override
-  State<MyHomePage> createState() => _MyHomePageState();
+  _LoginPageState createState() => _LoginPageState();
 }
 
-class _MyHomePageState extends State<MyHomePage> {
-  int _counter = 0;
+class _LoginPageState extends State<LoginPage> {
+  var UController = TextEditingController();
+  var PController = TextEditingController();
 
-  void _incrementCounter() {
-    setState(() {
-      // This call to setState tells the Flutter framework that something has
-      // changed in this State, which causes it to rerun the build method below
-      // so that the display can reflect the updated values. If we changed
-      // _counter without calling setState(), then the build method would not be
-      // called again, and so nothing would appear to happen.
-      _counter++;
-    });
+  @override
+  void dispose() {
+    // Clean up the controller when the widget is disposed.
+    PController.dispose();
+    UController.dispose();
+    super.dispose();
   }
 
   @override
   Widget build(BuildContext context) {
-    // This method is rerun every time setState is called, for instance as done
-    // by the _incrementCounter method above.
-    //
-    // The Flutter framework has been optimized to make rerunning build methods
-    // fast, so that you can just rebuild anything that needs updating rather
-    // than having to individually change instances of widgets.
     return Scaffold(
-      appBar: AppBar(
-        // Here we take the value from the MyHomePage object that was created by
-        // the App.build method, and use it to set our appbar title.
-        title: Text(widget.title),
-      ),
       body: Center(
-        // Center is a layout widget. It takes a single child and positions it
-        // in the middle of the parent.
-        child: Column(
-          // Column is also a layout widget. It takes a list of children and
-          // arranges them vertically. By default, it sizes itself to fit its
-          // children horizontally, and tries to be as tall as its parent.
-          //
-          // Invoke "debug painting" (press "p" in the console, choose the
-          // "Toggle Debug Paint" action from the Flutter Inspector in Android
-          // Studio, or the "Toggle Debug Paint" command in Visual Studio Code)
-          // to see the wireframe for each widget.
-          //
-          // Column has various properties to control how it sizes itself and
-          // how it positions its children. Here we use mainAxisAlignment to
-          // center the children vertically; the main axis here is the vertical
-          // axis because Columns are vertical (the cross axis would be
-          // horizontal).
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: <Widget>[
-            const Text(
-              'You have pushed the button this many times:',
+          child: Center(
+              //padding: EdgeInsets.fromLTRB(3.0, 20.0, 3.0, 0.0,),
+              child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+            TextField(
+              controller: UController,
+              decoration: const InputDecoration(
+                  border: OutlineInputBorder(), hintText: 'Email'),
             ),
-            Text(
-              '$_counter',
-              style: Theme.of(context).textTheme.headline4,
+            TextField(
+                obscureText: true,
+                controller: PController,
+                decoration: const InputDecoration(
+                    /*prefixText: 'prefix',*/
+                    border: OutlineInputBorder(),
+                    hintText: 'Password')),
+            TextButton(
+              style: TextButton.styleFrom(
+                padding: const EdgeInsets.all(16.0),
+                primary: Colors.black,
+                textStyle: const TextStyle(fontSize: 25),
+              ),
+              onPressed: () => {
+                if (UController.text == "" || PController.text == "")
+                  {
+                    showDialog<String>(
+                      //if password and username match database, allow login and navigate to mainpage (pictures, etc)
+                      //Otherwise send a popup that the login credentials were incorrect
+                      context: context,
+                      builder: (BuildContext context) => AlertDialog(
+                        title: const Text('Login Status'),
+                        content:
+                            const Text('Please enter your login information.'),
+                        actions: <Widget>[
+                          TextButton(
+                            onPressed: () {
+                              UController.clear();
+                              PController.clear();
+                              Navigator.pop(context, 'OK');
+                            },
+                            child: const Text('OK'),
+                          ),
+                        ],
+                      ),
+                    )
+                  }
+                else
+                  {
+                    service.emailSignInWithPassword(
+                        UController.text, PController.text),
+                    if (service.getCurrentUser() != null)
+                      {
+                        Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) => MainPage())),
+                      }
+                    //emailSignInWithPassword(UController.text, PController.text),
+                    //Navigator.push(context, MaterialPageRoute(builder: (context) => ContentPage())),
+                  }
+              },
+              child: const Text('Login'),
+              //onPressed: () =>{attemptLogin()}
             ),
-          ],
-        ),
-      ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: _incrementCounter,
-        tooltip: 'Increment',
-        child: const Icon(Icons.add),
-      ), // This trailing comma makes auto-formatting nicer for build methods.
+            TextButton(
+              style: TextButton.styleFrom(
+                padding: const EdgeInsets.all(16.0),
+                primary: Colors.black,
+                //textStyle: const TextStyle(Fontweight.bold),
+              ),
+              onPressed: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => RegistrationForm()),
+                );
+              },
+              child: const Text('Create New Account'),
+            ),
+          ]))),
     );
+  }
+}
+
+class RegistrationForm extends StatelessWidget {
+  RegistrationForm({Key? key}) : super(key: key);
+  //Controllers for first name, last name, etc
+  //FNController, EController, PwController, bioController, homeController, ageController
+  var FNController = TextEditingController();
+  var EController = TextEditingController();
+  var PwController = TextEditingController();
+  var bioController = TextEditingController();
+  var homeController = TextEditingController();
+  var ageController = TextEditingController();
+
+  Future<void> addUser(String Name, String bio, String hometown, String age,
+      String email, String pass, BuildContext context) async {
+    // Call the user's Reference to add a new user
+    bool errorThrown = true;
+    try {
+      UserCredential userCredential =
+          await service.emailPassSignUp(email, pass);
+      errorThrown = false;
+    } on FirebaseAuthException catch (e) {
+      if (e.code == 'weak-password') {
+        errorThrown = true;
+        print('The password provided is too weak.');
+        ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+            content: Text("The password provided is too weak.")));
+        //return;
+      } else if (e.code == 'email-already-in-use') {
+        print('The account already exists for that email.');
+        ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+            content: Text("The account already exists for that email.")));
+        errorThrown = true;
+        //return;
+      }
+    } catch (e) {
+      print(e);
+      return;
+    }
+    //assuming everything went well with the email registration
+    if (errorThrown == false && service.getCurrentUser() != null) {
+      print('DATE' + DateTime.now().toString());
+      var user = await service.getCurrentUser();
+      String uid = user!.uid;
+
+      //EDIT REGISTRATION PARAMETERS
+
+      //dateTime object
+      var now = DateTime.now();
+      var regisDate = formatDate(now, [mm, "/", dd, "/", yyyy]);
+      service
+          .getCollection('users')
+          //.doc(userCredential.user!.uid)
+          .add({
+            //'Email': Email, // xyz@gmail.com
+            'id': Name, // Stokes and Sons
+            'Registration DateTime':
+                regisDate, //insert function to grab time/date, format it, and convert it to string
+            'Bio': bio,
+            'HomeTown': hometown,
+            'Age': age,
+            'UID': uid,
+            //'picture': defaultImageURL,
+            //'UID': uid,
+            //'Password': Pass
+          })
+          .then((value) => print("User Added"))
+          .catchError((error) => print("Failed to add user: $error"));
+      Navigator.of(context).pop();
+      //Navigator.of(context)..pop();
+
+      //send popup showing that the user registered successfully. When the user clicks "ok", send them back to login page
+      //} else {}
+    }
+  }
+
+  @override
+  //wall of textfields...
+  Widget build(BuildContext context) {
+    return Scaffold(
+        body: SingleChildScrollView(
+            child: Center(
+                child: Center(
+                    //padding: EdgeInsets.fromLTRB(0.0, 20.0, 0.0, 0.0,),
+                    child: Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+          const Padding(
+              // Even Padding On All Sides
+              padding: EdgeInsets.all(20.0)),
+          //EDIT REGISTRATION PARAMETERS
+          TextField(
+            //scrollPadding: EdgeInsets.fromTLRB(0.0, 20.0, 0.0, 0.0),
+            controller: FNController,
+            decoration: const InputDecoration(
+                border: OutlineInputBorder(), hintText: 'User Name'),
+          ),
+          TextField(
+            controller: EController,
+            decoration: const InputDecoration(
+                border: OutlineInputBorder(), hintText: 'Email'),
+          ),
+          TextField(
+            controller: PwController,
+            obscureText: true,
+            decoration: const InputDecoration(
+                border: OutlineInputBorder(), hintText: 'Password'),
+          ),
+          TextField(
+            controller: homeController,
+            decoration: const InputDecoration(
+                border: OutlineInputBorder(), hintText: 'Hometown'),
+          ),
+          TextField(
+            controller: bioController,
+            decoration: const InputDecoration(
+                border: OutlineInputBorder(), hintText: 'Bio'),
+          ),
+          TextField(
+            controller: ageController,
+            decoration: const InputDecoration(
+                border: OutlineInputBorder(), hintText: 'Age'),
+          ),
+          TextButton(
+            style: TextButton.styleFrom(
+              padding: const EdgeInsets.all(16.0),
+              primary: Colors.black,
+              //textStyle: const TextStyle(Fontweight.bold),
+            ),
+            //submit values to firestore
+            onPressed: () => {
+              //email/password authentication here
+
+              //1constructor String FName, String LName, String Email, String Pass, --String UID--, --String Role--
+              //user's data here
+              //service.emailPassSignUp(EController.text, PwController.text),
+              if (FNController.text == "" ||
+                  EController.text == "" ||
+                  PwController.text == "" ||
+                  bioController.text == "" ||
+                  homeController.text == "" ||
+                  ageController.text == "")
+                {
+                  showDialog<String>(
+                    //if password and username match database, allow login and navigate to mainpage (pictures, etc)
+                    //Otherwise send a popup that the login credentials were incorrect
+                    context: context,
+                    builder: (BuildContext context) => AlertDialog(
+                      title: const Text('Login Status'),
+                      content: const Text('Fill out all fields'),
+                      actions: <Widget>[
+                        TextButton(
+                          onPressed: () => {
+                            //navigates back to login page
+                            //Navigator.of(context)..pop()..pop()
+                            Navigator.pop(context, 'OK'),
+                          },
+                          child: const Text('OK'),
+                        ),
+                      ],
+                    ),
+                  )
+                }
+              else
+                {
+                  addUser(
+                      FNController.text,
+                      bioController.text,
+                      homeController.text,
+                      ageController.text,
+                      EController.text,
+                      PwController.text,
+                      context)
+                },
+            },
+            child: const Text('Register'),
+          )
+        ])))));
   }
 }
