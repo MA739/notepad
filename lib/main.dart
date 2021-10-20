@@ -146,6 +146,7 @@ class _LoginPageState extends State<LoginPage> {
   }
 }
 
+// ignore: must_be_immutable
 class RegistrationForm extends StatelessWidget {
   RegistrationForm({Key? key}) : super(key: key);
   //Controllers for first name, last name, etc
@@ -157,8 +158,8 @@ class RegistrationForm extends StatelessWidget {
   var homeController = TextEditingController();
   var ageController = TextEditingController();
 
-  Future<void> addUser(String Name, String bio, String hometown, String age,
-      String email, String pass, BuildContext context) async {
+  Future<void> addUser(
+      String Name, String email, String pass, BuildContext context) async {
     // Call the user's Reference to add a new user
     bool errorThrown = true;
     try {
@@ -168,12 +169,12 @@ class RegistrationForm extends StatelessWidget {
     } on FirebaseAuthException catch (e) {
       if (e.code == 'weak-password') {
         errorThrown = true;
-        print('The password provided is too weak.');
+        //print('The password provided is too weak.');
         ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
             content: Text("The password provided is too weak.")));
         //return;
       } else if (e.code == 'email-already-in-use') {
-        print('The account already exists for that email.');
+        //print('The account already exists for that email.');
         ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
             content: Text("The account already exists for that email.")));
         errorThrown = true;
@@ -202,9 +203,9 @@ class RegistrationForm extends StatelessWidget {
             'id': Name, // Stokes and Sons
             'Registration DateTime':
                 regisDate, //insert function to grab time/date, format it, and convert it to string
-            'Bio': bio,
-            'HomeTown': hometown,
-            'Age': age,
+            //'Bio': bio,
+            //'HomeTown': hometown,
+            //'Age': age,
             'UID': uid,
             //'picture': defaultImageURL,
             //'UID': uid,
@@ -252,21 +253,6 @@ class RegistrationForm extends StatelessWidget {
             decoration: const InputDecoration(
                 border: OutlineInputBorder(), hintText: 'Password'),
           ),
-          TextField(
-            controller: homeController,
-            decoration: const InputDecoration(
-                border: OutlineInputBorder(), hintText: 'Hometown'),
-          ),
-          TextField(
-            controller: bioController,
-            decoration: const InputDecoration(
-                border: OutlineInputBorder(), hintText: 'Bio'),
-          ),
-          TextField(
-            controller: ageController,
-            decoration: const InputDecoration(
-                border: OutlineInputBorder(), hintText: 'Age'),
-          ),
           TextButton(
             style: TextButton.styleFrom(
               padding: const EdgeInsets.all(16.0),
@@ -282,10 +268,7 @@ class RegistrationForm extends StatelessWidget {
               //service.emailPassSignUp(EController.text, PwController.text),
               if (FNController.text == "" ||
                   EController.text == "" ||
-                  PwController.text == "" ||
-                  bioController.text == "" ||
-                  homeController.text == "" ||
-                  ageController.text == "")
+                  PwController.text == "")
                 {
                   showDialog<String>(
                     //if password and username match database, allow login and navigate to mainpage (pictures, etc)
@@ -309,18 +292,30 @@ class RegistrationForm extends StatelessWidget {
                 }
               else
                 {
-                  addUser(
-                      FNController.text,
-                      bioController.text,
-                      homeController.text,
-                      ageController.text,
-                      EController.text,
-                      PwController.text,
-                      context)
+                  addUser(FNController.text, EController.text,
+                      PwController.text, context)
                 },
             },
             child: const Text('Register'),
           )
         ])))));
+  }
+}
+
+class MainPage extends StatefulWidget {
+  const MainPage({Key? key}) : super(key: key);
+  @override
+  _MainPageState createState() => _MainPageState();
+}
+
+class _MainPageState extends State<MainPage> {
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+        body: Center(
+            child: Center(
+                child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [Text('Main page')]))));
   }
 }
