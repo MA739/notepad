@@ -1,6 +1,10 @@
 # notepad
+To log in to the app, use the following credentials.
+Login Credentials
+  Email: tb1@gmail.com
+  Pass: testdummy1
 
-A new Flutter project.
+You can also register a new user, if need to.
 
 ## Getting Started
 
