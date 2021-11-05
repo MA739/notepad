@@ -80,13 +80,13 @@ class _NotePageState extends State<NotePage> {
       if (title.isNotEmpty) {
         messageDoc.set(<String, dynamic>{
           'Title': title,
-          'DateCreated': DateTime.now().millisecondsSinceEpoch.toString(),
+          'DateCreated': DateTime.now(),
           'Content': noteContent,
         });
       } else {
         messageDoc.set(<String, dynamic>{
           'Title': "Untitled",
-          'DateCreated': DateTime.now().millisecondsSinceEpoch.toString(),
+          'DateCreated': DateTime.now(),
           'Content': noteContent,
         });
       }

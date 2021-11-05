@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'firestore_service.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'new_notepage.dart';
+import 'package:date_format/date_format.dart';
 
 FirebaseService service = FirebaseService();
 
@@ -37,7 +38,9 @@ class _homePageState extends State<homePage> {
                           .map((doc) => Card(
                                 child: ListTile(
                                     title: Text(doc['Title']),
-                                    subtitle: Text((doc['DateCreated']))),
+                                    subtitle: Text((doc['DateCreated']
+                                        .toDate()
+                                        .toString()))),
                               ))
                           .toList());
                 }
