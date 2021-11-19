@@ -5,7 +5,6 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 FirebaseService service = FirebaseService();
 
 class EditNotePage extends StatefulWidget {
-
   // An object of DocumentSnapshot needs to be passed in order
   // to modify that specific note and retrieve its existing content
   DocumentSnapshot editDoc;
@@ -37,22 +36,21 @@ class _EditNotePageState extends State<EditNotePage> {
         centerTitle: true,
         actions: [
           IconButton(
-            onPressed: () => {
-              //write note to database
-              saveNote(noteTitle.text, noteContent.text),
-              //return to homescreen
-              Navigator.pop(context),
-            },
-            icon: const Icon(Icons.save_alt_rounded))
+              onPressed: () => {
+                    //write note to database
+                    saveNote(noteTitle.text, noteContent.text),
+                    //return to homescreen
+                    Navigator.pop(context),
+                  },
+              icon: const Icon(Icons.save))
         ],
         shape: const RoundedRectangleBorder(
-          borderRadius: BorderRadius.vertical(bottom: Radius.circular(15))
-        ),
+            borderRadius: BorderRadius.vertical(bottom: Radius.circular(15))),
         elevation: 2,
       ),
       body: Center(
         child: SingleChildScrollView(
-          padding: const EdgeInsets.symmetric(horizontal: 20,vertical: 5),
+          padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 5),
           physics: const BouncingScrollPhysics(),
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
@@ -60,25 +58,22 @@ class _EditNotePageState extends State<EditNotePage> {
               TextField(
                 controller: noteTitle,
                 decoration: const InputDecoration(
-                  border: InputBorder.none,
-                  hintText: "Title",
-                  hintStyle: TextStyle(
-                    fontSize: 25,
-                    fontWeight: FontWeight.bold,
-                    color: Colors.black)
-                ),
-                style: const TextStyle(
-                  fontSize: 25,
-                  fontWeight: FontWeight.bold),
+                    border: InputBorder.none,
+                    hintText: "Title",
+                    hintStyle: TextStyle(
+                        fontSize: 25,
+                        fontWeight: FontWeight.bold,
+                        color: Colors.black)),
+                style:
+                    const TextStyle(fontSize: 25, fontWeight: FontWeight.bold),
                 autofocus: true,
               ),
               TextField(
                 controller: noteContent,
                 decoration: const InputDecoration(
-                  border: InputBorder.none,
-                  hintText: "Type Here...",
-                  hintStyle: TextStyle(fontSize: 18)
-                ),
+                    border: InputBorder.none,
+                    hintText: "Type Here...",
+                    hintStyle: TextStyle(fontSize: 18)),
                 style: const TextStyle(fontSize: 18),
                 scrollPadding: const EdgeInsets.all(20.0),
                 keyboardType: TextInputType.multiline,
@@ -114,5 +109,4 @@ class _EditNotePageState extends State<EditNotePage> {
       }
     }
   }
-
 }
