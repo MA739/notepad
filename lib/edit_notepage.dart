@@ -4,23 +4,36 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 
 FirebaseService service = FirebaseService();
 
-class NotePage extends StatefulWidget {
-  const NotePage({Key? key}) : super(key: key);
-  _NotePageState createState() => _NotePageState();
+class EditNotePage extends StatefulWidget {
+
+  // An object of DocumentSnapshot needs to be passed in order
+  // to modify that specific note and retrieve its existing content
+  DocumentSnapshot editDoc;
+  EditNotePage({required this.editDoc});
+
+  @override
+  _EditNotePageState createState() => _EditNotePageState();
 }
 
-//Add method to update note message, if the doc already exists
-
-class _NotePageState extends State<NotePage> {
+class _EditNotePageState extends State<EditNotePage> {
   //need to build an editable text object that fits the whole page
   TextEditingController noteTitle = TextEditingController();
   TextEditingController noteContent = TextEditingController();
 
+  @override
+  void initState() {
+    // Fills controllers with note data from the snapshot
+    noteTitle = TextEditingController(text: widget.editDoc['Title']);
+    noteContent = TextEditingController(text: widget.editDoc['Content']);
+    super.initState();
+  }
+
+  @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
         automaticallyImplyLeading: true,
-        title: const Text("New Note"),
+        title: const Text("Edit Note"),
         centerTitle: true,
         actions: [
           IconButton(
@@ -82,30 +95,24 @@ class _NotePageState extends State<NotePage> {
 
   Future<void> saveNote(String title, String noteContent) async {
     if (noteContent == "") {
-      //just return to home page
+      // Return to home if content is blank
       Navigator.pop(context);
     } else {
-      final DocumentReference messageDoc = service
-          .getCollection('users')
-          .doc(service.auth.currentUser!.uid)
-          .collection('notes')
-          .doc();
-
-      //check if the doc with this id already exists...
-
+      // Check if the title is empty
       if (title.isNotEmpty) {
-        messageDoc.set(<String, dynamic>{
+        // Using the reference of the passed DocumentSnapshot,
+        // update the data of the referenced note
+        widget.editDoc.reference.update({
           'Title': title,
-          'DateCreated': DateTime.now(),
           'Content': noteContent,
         });
       } else {
-        messageDoc.set(<String, dynamic>{
-          'Title': "Untitled",
-          'DateCreated': DateTime.now(),
+        widget.editDoc.reference.update({
+          'Title': 'Untitled',
           'Content': noteContent,
         });
       }
     }
   }
+
 }
