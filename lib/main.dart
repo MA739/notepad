@@ -19,13 +19,22 @@ class MyApp extends StatelessWidget {
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      title: 'Flutter Demo',
-      debugShowCheckedModeBanner: false,
-      theme: ThemeData(
-        primarySwatch: Colors.blue,
-      ),
-      home: LoginPage(),
-    );
+    final isDarkMode = Settings.getValue<bool>(HeaderPage.keyDarkMode, ture);
+    return ValueChangeObserver<bool>(
+      cacheKey: HeaderPage.keyDarkMode,
+      defaultValue: true,
+      builder: (_, isDarkMode, __) => MaterialApp(
+        debugShowCheckedModeBanner: false,
+        title: 'Flutter Demo',
+        theme: ThemeData.dark().copyWith(
+          primaryColor: Colors.teal,
+          accentColor: Colors.white,
+          scaffoldBackgroundColor: Color(0xFF170635),
+          canvasColor: Color(0xFF170635),
+        ),
+        : ThemeData.light().copyWith(accentColor: Colors.black),
+        home: SettingsPage(),
+      ), // MaterialApp
+    ); // ValueChangeObserver
   }
 }
