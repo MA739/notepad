@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'firestore_service.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:date_format/date_format.dart';
+import 'package:flutter_settings_screens/flutter_settings_screens.dart';
 
 class SettingsPage extends StatefulWidget {
   @override
