@@ -61,14 +61,14 @@ class _SettingsPageState extends State<SettingsPage> {
   Widget buildDeleteAccount() => SimpleSettingsTile(
     title: 'Delete Account',
     subtitle: '',
-    leading: Icon(icon: Icons,delete, color: Colors.pink),
+    leading: Icon(icon: Icons, delete, color: Colors.pink),
     onTap: () => Utils.showSnackBar(context, 'Clicked Delete Account'),
   ); // SimpleSettingTile
 
   Widget BuildReportBug(BuildContext context) => SimpleSettingsTile(
       title: 'Report A Bug',
       subtitle: '',
-      leading: Icon(icon: Icons.bug_report, color: Colors.teal)
+      leading: Icon(icon: Icons.bug_report, color: Colors.teal),
       onTap: () => Utils.showSnackBar(context, 'Clicked Report A Bug')
   ), // SimpleSettingsTile
 
