@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:notepad/edit_notepage.dart';
+import 'package:notepad/settings_page.dart';
 import 'firestore_service.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'new_notepage.dart';
@@ -25,10 +26,14 @@ class _homePageState extends State<homePage> {
           borderRadius: BorderRadius.vertical(bottom: Radius.circular(15))
         ),
         elevation: 2,
-        // Maybe add settings here?
         leading: IconButton(
-          icon: const Icon(Icons.menu),
-          onPressed: () {},
+          icon: const Icon(Icons.settings),
+          onPressed: () {
+            Navigator.push(
+              context,
+              MaterialPageRoute(builder: (context) => SettingsPage()),
+            );
+          }
         )
       ),
       body: SafeArea(
