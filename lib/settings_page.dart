@@ -54,34 +54,34 @@ class _SettingsPageState extends State<SettingsPage> {
   Widget buildLogout() => SimpleSettingsTile(
     title: 'Logout',
     subtitle: '',
-    leading: IconWidget(icon: Icons.logout, color: Colors.blueAccent),
+    leading: Icon(icon: Icons.logout, color: Colors.blueAccent),
     onTap: () => Utils.showSnackBar(context, "Clicked Logout"))
   ); // SimpleSettingsTile
 
   Widget buildDeleteAccount() => SimpleSettingsTile(
     title: 'Delete Account',
     subtitle: '',
-    leading: IconWidget(icon: Icons,delete, color: Colors.pink),
+    leading: Icon(icon: Icons,delete, color: Colors.pink),
     onTap: () => Utils.showSnackBar(context, 'Clicked Delete Account'),
   ); // SimpleSettingTile
 
   Widget BuildReportBug(BuildContext context) => SimpleSettingsTile(
       title: 'Report A Bug',
       subtitle: '',
-      leading: IconWidget(icon: Icons.bug_report, color: Colors.teal)
+      leading: Icon(icon: Icons.bug_report, color: Colors.teal)
       onTap: () => Utils.showSnackBar(context, 'Clicked Report A Bug')
   ), // SimpleSettingsTile
 
   Widget BuildSendFeedback(BuildContext context) => SimpleSettingsTile(
       title: 'Send Feedback',
       subtitle: '',
-      leading: IconWidget(icon: Icons.thumb_up, color: Colors.purple)
+      leading: Icon(icon: Icons.thumb_up, color: Colors.purple)
       onTap: () => Utils.showSnackBar(context, 'Clicked SendFeedback')
   ), // SimpleSettingsTile
 
  Widget buildDarkMode() => SwitchSettingsTile(
    settingsKey: keyDarkMode,
-   leading: IconWidget(
+   leading: Icon(
      icon: Icons.dark_mode,
      color: Color(0xFF642ef3),
    ), // IconWidget
