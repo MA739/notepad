@@ -18,32 +18,30 @@ class _homePageState extends State<homePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      //extendBodyBehindAppBar: true,
-      appBar: AppBar(
-        title: const Text("Your Notes"),
-        centerTitle: true,
-        shape: const RoundedRectangleBorder(
-          borderRadius: BorderRadius.vertical(bottom: Radius.circular(15))
-        ),
-        elevation: 2,
-        leading: IconButton(
-          icon: const Icon(Icons.settings),
-          onPressed: () {
-            Navigator.push(
-              context,
-              MaterialPageRoute(builder: (context) => SettingsPage()),
-            );
-          }
-        )
-      ),
-      body: SafeArea(
-        child: StreamBuilder(
+        //extendBodyBehindAppBar: true,
+        appBar: AppBar(
+            title: const Text("Your Notes"),
+            centerTitle: true,
+            shape: const RoundedRectangleBorder(
+                borderRadius:
+                    BorderRadius.vertical(bottom: Radius.circular(15))),
+            elevation: 2,
+            leading: IconButton(
+                icon: const Icon(Icons.settings),
+                onPressed: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(builder: (context) => SettingsPage()),
+                  );
+                })),
+        body: SafeArea(
+            child: StreamBuilder(
           stream: service
-          .getCollection('users')
-          .doc(service.auth.currentUser!.uid)
-          .collection('notes')
-          .snapshots()
-          .distinct(),
+              .getCollection('users')
+              .doc(service.auth.currentUser!.uid)
+              .collection('notes')
+              .snapshots()
+              .distinct(),
           builder: (BuildContext context, AsyncSnapshot<dynamic> snapshot) {
             //displays user's subcollection of notes
             if (snapshot.hasData) {
@@ -53,7 +51,8 @@ class _homePageState extends State<homePage> {
                 gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
                   crossAxisCount: 2,
                   mainAxisSpacing: 15,
-                  crossAxisSpacing: 15,),
+                  crossAxisSpacing: 15,
+                ),
                 itemCount: snapshot.data!.docs.length,
                 shrinkWrap: true,
                 physics: const BouncingScrollPhysics(),
@@ -64,47 +63,49 @@ class _homePageState extends State<homePage> {
                     onTap: () {
                       Navigator.push(
                         context,
-                        MaterialPageRoute(builder: (context) => EditNotePage(editDoc: snapshot.data!.docs[index])),
+                        MaterialPageRoute(
+                            builder: (context) => EditNotePage(
+                                  editDoc: snapshot.data!.docs[index],
+                                  docID: snapshot.data!.docs[index].id,
+                                )),
                       );
                     },
                     child: Container(
-                      decoration: BoxDecoration(
-                        color: Colors.amber[50],
-                        borderRadius: BorderRadius.circular(15.0),
-                        boxShadow: [
-                          BoxShadow(
-                            color: Colors.grey.withOpacity(0.2),
-                            spreadRadius: 1,
-                            blurRadius: 2,
-                            offset: const Offset(0, 3)
-                          )
-                        ],
-                      ),
-                      padding: const EdgeInsets.all(10),
-                      height: 150,
-                      child: Column(
-                        children: [
-                          Align(
-                            alignment: Alignment.centerLeft,
-                            child: Text(snapshot.data!.docs[index].data()['Title'],
-                            maxLines: 1,
-                            overflow: TextOverflow.ellipsis,
-                              style: const TextStyle(
-                                fontSize: 18,
-                                fontWeight: FontWeight.bold
-                              )
+                        decoration: BoxDecoration(
+                          color: Colors.amber[50],
+                          borderRadius: BorderRadius.circular(15.0),
+                          boxShadow: [
+                            BoxShadow(
+                                color: Colors.grey.withOpacity(0.2),
+                                spreadRadius: 1,
+                                blurRadius: 2,
+                                offset: const Offset(0, 3))
+                          ],
+                        ),
+                        padding: const EdgeInsets.all(10),
+                        height: 150,
+                        child: Column(
+                          children: [
+                            Align(
+                              alignment: Alignment.centerLeft,
+                              child: Text(
+                                  snapshot.data!.docs[index].data()['Title'],
+                                  maxLines: 1,
+                                  overflow: TextOverflow.ellipsis,
+                                  style: const TextStyle(
+                                      fontSize: 18,
+                                      fontWeight: FontWeight.bold)),
                             ),
-                          ),
-                          const SizedBox(height: 5),
-                          Align(
-                            alignment: Alignment.centerLeft,
-                            child: Text(snapshot.data!.docs[index].data()['Content'],
-                            maxLines: 6,
-                            overflow: TextOverflow.ellipsis),
-                          )
-                        ],
-                      )
-                    ),
+                            const SizedBox(height: 5),
+                            Align(
+                              alignment: Alignment.centerLeft,
+                              child: Text(
+                                  snapshot.data!.docs[index].data()['Content'],
+                                  maxLines: 6,
+                                  overflow: TextOverflow.ellipsis),
+                            )
+                          ],
+                        )),
                   );
                 },
               );
@@ -113,19 +114,16 @@ class _homePageState extends State<homePage> {
               return const Center(child: CircularProgressIndicator());
             }
           },
-        )
-      ),
-      // Allows user to create a new note
-      floatingActionButton: FloatingActionButton(
-        tooltip: 'Post Note',
-        child: const Icon(Icons.add),
-        onPressed: () {
-          Navigator.push(
-            context,
-            MaterialPageRoute(builder: (context) => const NotePage()),
-          );
-        }
-      )
-    );
+        )),
+        // Allows user to create a new note
+        floatingActionButton: FloatingActionButton(
+            tooltip: 'Post Note',
+            child: const Icon(Icons.add),
+            onPressed: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(builder: (context) => const NotePage()),
+              );
+            }));
   }
 }

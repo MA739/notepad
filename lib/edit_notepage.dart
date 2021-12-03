@@ -8,7 +8,8 @@ class EditNotePage extends StatefulWidget {
   // An object of DocumentSnapshot needs to be passed in order
   // to modify that specific note and retrieve its existing content
   DocumentSnapshot editDoc;
-  EditNotePage({required this.editDoc});
+  final String docID;
+  EditNotePage({required this.editDoc, required this.docID});
 
   @override
   _EditNotePageState createState() => _EditNotePageState();
@@ -18,12 +19,13 @@ class _EditNotePageState extends State<EditNotePage> {
   //need to build an editable text object that fits the whole page
   TextEditingController noteTitle = TextEditingController();
   TextEditingController noteContent = TextEditingController();
-
+  String documentID = "";
   @override
   void initState() {
     // Fills controllers with note data from the snapshot
     noteTitle = TextEditingController(text: widget.editDoc['Title']);
     noteContent = TextEditingController(text: widget.editDoc['Content']);
+    documentID = widget.docID;
     super.initState();
   }
 
@@ -35,6 +37,32 @@ class _EditNotePageState extends State<EditNotePage> {
         title: const Text("Edit Note"),
         centerTitle: true,
         actions: [
+          IconButton(
+              onPressed: () => {
+                    //write note to database
+                    //ask for confirmation. If the user clicks "Yes", delete
+                    showDialog<String>(
+                        //confirm user signout
+                        context: context,
+                        builder: (BuildContext context) => AlertDialog(
+                                content: const Text(
+                                    'Are you sure you want to delete this?'),
+                                actions: <Widget>[
+                                  TextButton(
+                                      //This is where it would navigate to the actual app's content
+                                      onPressed: () => {Navigator.pop(context)},
+                                      child: const Text('No')),
+                                  TextButton(
+                                      //This is where it would navigate to the actual app's content
+                                      onPressed: () => {
+                                            deleteNote(),
+                                            Navigator.of(context).popUntil(
+                                                (route) => route.isFirst)
+                                          },
+                                      child: const Text('Yes'))
+                                ]))
+                  },
+              icon: const Icon(Icons.delete)),
           IconButton(
               onPressed: () => {
                     //write note to database
@@ -86,6 +114,16 @@ class _EditNotePageState extends State<EditNotePage> {
       ),
       resizeToAvoidBottomInset: true,
     );
+  }
+
+  Future<void> deleteNote() async {
+    final DocumentReference messageDoc = service
+        .getCollection('users')
+        .doc(service.auth.currentUser!.uid)
+        .collection('notes')
+        //use docID var, passed from main menu when the user clicks on the doc...
+        .doc(documentID);
+    messageDoc.delete();
   }
 
   Future<void> saveNote(String title, String noteContent) async {
