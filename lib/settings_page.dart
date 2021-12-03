@@ -1,92 +1,114 @@
+// ignore_for_file: import_of_legacy_library_into_null_safe
+
 import 'package:flutter/material.dart';
 import 'firestore_service.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:date_format/date_format.dart';
 import 'package:flutter_settings_screens/flutter_settings_screens.dart';
 
 class SettingsPage extends StatefulWidget {
+  static const keyDarkMode = 'key-dark-mode';
+
   @override
   _SettingsPageState createState() => _SettingsPageState();
 }
 
-class HeaderPage extends StatelessWidget {
-  static const keyDarkMode = 'key-dark-mode';
-
-  @override
-  Widget build(BuildContext context) => Column(
-    children: [
-      buildHeader(),
-      const SizedBox(height; 32),
-      buildUser(context),
-      buildDarkMode,
-    ],
-  ); // Column
-}
-
 class _SettingsPageState extends State<SettingsPage> {
   @override
-  Widget build(BuildContext> context) => Scaffold(
+  Widget build(BuildContext context) => Scaffold(
+      appBar: AppBar(
+        title: const Text("Settings"),
+        centerTitle: true,
+        shape: const RoundedRectangleBorder(
+          borderRadius: BorderRadius.vertical(bottom: Radius.circular(15))
+        ),
+        elevation: 2,
+      ),
       body: SafeArea(
         child: ListView(
-          padding: EdgeInsets.all(24),
+          padding: const EdgeInsets.all(24),
           children: [
             SettingsGroup(
                 title: 'GENERAL',
                 children: <Widget>[
+                  buildDarkMode(),
                   buildLogout(),
                   buildDeleteAccount(),
-                ], // <Widget>[]
-            ), // SettingsGroup
+                ],
+            ),
             const SizedBox(height: 32),
             SettingsGroup(
                 title: 'FEEDBACK',
-                children <Widget> [
+                children: <Widget> [
                   const SizedBox(height: 8),
                   buildReportBug(context),
                   buildSendFeedback(context),
-                ], // <Widget>
-                ), // SettingsGroup
+                ],
+            ),
           ],
-        ), // ListView
-      ), // SafeArea
-  ); // Scaffold
+        ),
+      ),
+  );
 
   Widget buildLogout() => SimpleSettingsTile(
     title: 'Logout',
     subtitle: '',
-    leading: IconWidget(icon: Icons.logout, color: Colors.blueAccent),
-    onTap: () => Utils.showSnackBar(context, "Clicked Logout"))
-  ); // SimpleSettingsTile
+    leading: const Icon(Icons.logout, color: Colors.blueAccent),
+    onTap: () {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(
+          content: Text("Clicked Logout")
+        )
+      );
+    }
+  );
 
   Widget buildDeleteAccount() => SimpleSettingsTile(
     title: 'Delete Account',
     subtitle: '',
-    leading: IconWidget(icon: Icons,delete, color: Colors.pink),
-    onTap: () => Utils.showSnackBar(context, 'Clicked Delete Account'),
-  ); // SimpleSettingTile
+    leading: const Icon(Icons.delete, color: Colors.pink),
+      onTap: () {
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(
+            content: Text("Clicked Delete Account")
+          )
+        );
+      }
+  );
 
-  Widget BuildReportBug(BuildContext context) => SimpleSettingsTile(
+  Widget buildReportBug(BuildContext context) => SimpleSettingsTile(
       title: 'Report A Bug',
       subtitle: '',
-      leading: IconWidget(icon: Icons.bug_report, color: Colors.teal)
-      onTap: () => Utils.showSnackBar(context, 'Clicked Report A Bug')
-  ), // SimpleSettingsTile
+      leading: const Icon(Icons.bug_report, color: Colors.teal),
+      onTap: () {
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(
+            content: Text("Clicked Report A Bug")
+          )
+        );
+      }
+  );
 
-  Widget BuildSendFeedback(BuildContext context) => SimpleSettingsTile(
+  Widget buildSendFeedback(BuildContext context) => SimpleSettingsTile(
       title: 'Send Feedback',
       subtitle: '',
-      leading: IconWidget(icon: Icons.thumb_up, color: Colors.purple)
-      onTap: () => Utils.showSnackBar(context, 'Clicked SendFeedback')
-  ), // SimpleSettingsTile
+      leading: const Icon(Icons.thumb_up, color: Colors.purple),
+      onTap: () {
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(
+            content: Text("Clicked SendFeedback")
+          )
+        );
+      }
+  );
 
  Widget buildDarkMode() => SwitchSettingsTile(
-   settingsKey: keyDarkMode,
-   leading: IconWidget(
-     icon: Icons.dark_mode,
-     color: Color(0xFF642ef3),
-   ), // IconWidget
-   title: 'Dark Mode',
-   onChange:(_) {},
- ); // SwitchSettingsTile
+    settingKey: SettingsPage.keyDarkMode,
+    leading: const Icon(
+      Icons.dark_mode,
+      color: Color(0xFF642ef3),
+    ),
+    title: 'Dark Mode',
+    onChange:(_) {},
+ );
 
 }
