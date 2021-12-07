@@ -33,10 +33,10 @@ class MyApp extends StatelessWidget {
         debugShowCheckedModeBanner: false,
         title: 'Notepad',
         theme: isDarkMode ? ThemeData.dark().copyWith(
-          primaryColor: Colors.teal,
-          accentColor: Colors.white,
-          scaffoldBackgroundColor: Color(0xFF170635),
-          canvasColor: Color(0xFF170635),
+          primaryColor: Colors.blue,
+          //colorScheme: ColorScheme.dark().copyWith(secondary: Colors.white),
+          scaffoldBackgroundColor: Color(0xFF102A43),
+          canvasColor: Color(0xFF102A43),
         )
         : ThemeData.light().copyWith(accentColor: Colors.black),
         home: const LoginPage(),

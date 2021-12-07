@@ -20,6 +20,7 @@ class _homePageState extends State<homePage> {
     return Scaffold(
         //extendBodyBehindAppBar: true,
         appBar: AppBar(
+            backgroundColor: Theme.of(context).brightness == Brightness.dark ? Color(0xFF323F4B) : Colors.blue,
             title: const Text("Your Notes"),
             centerTitle: true,
             shape: const RoundedRectangleBorder(
@@ -72,11 +73,11 @@ class _homePageState extends State<homePage> {
                     },
                     child: Container(
                         decoration: BoxDecoration(
-                          color: Colors.orange[600],
+                          color: Theme.of(context).brightness == Brightness.dark ? Colors.blueGrey[800] : Colors.amber[50],
                           borderRadius: BorderRadius.circular(15.0),
                           boxShadow: [
                             BoxShadow(
-                                color: Colors.grey.withOpacity(0.2),
+                                color: Theme.of(context).brightness == Brightness.dark ? Color(0xFF102A43): Colors.grey.withOpacity(0.2),
                                 spreadRadius: 1,
                                 blurRadius: 2,
                                 offset: const Offset(0, 3))
@@ -117,6 +118,7 @@ class _homePageState extends State<homePage> {
         )),
         // Allows user to create a new note
         floatingActionButton: FloatingActionButton(
+            backgroundColor: Theme.of(context).brightness == Brightness.dark ? Colors.blueGrey[400] : Colors.blue,
             tooltip: 'Post Note',
             child: const Icon(Icons.add),
             onPressed: () {
