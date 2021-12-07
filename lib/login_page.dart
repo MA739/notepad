@@ -25,8 +25,15 @@ class _LoginPageState extends State<LoginPage> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      body: Center(
+      return Scaffold(
+          appBar: AppBar(
+            title: const Text("Notepad"),
+            centerTitle: true,
+            shape: const RoundedRectangleBorder(
+              borderRadius:
+              BorderRadius.vertical(bottom: Radius.circular(15))),
+              elevation: 2),
+        body: Center(
           child: Center(
               //padding: EdgeInsets.fromLTRB(3.0, 20.0, 3.0, 0.0,),
               child: Column(
@@ -47,7 +54,6 @@ class _LoginPageState extends State<LoginPage> {
             TextButton(
               style: TextButton.styleFrom(
                 padding: const EdgeInsets.all(16.0),
-                primary: Colors.black,
                 textStyle: const TextStyle(fontSize: 25),
               ),
               onPressed: () => {
@@ -89,7 +95,6 @@ class _LoginPageState extends State<LoginPage> {
             TextButton(
               style: TextButton.styleFrom(
                 padding: const EdgeInsets.all(16.0),
-                primary: Colors.black,
                 //textStyle: const TextStyle(Fontweight.bold),
               ),
               onPressed: () {
