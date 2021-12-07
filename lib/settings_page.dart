@@ -62,19 +62,6 @@ class _SettingsPageState extends State<SettingsPage> {
     }
   );
 
-  Widget buildDeleteAccount() => SimpleSettingsTile(
-    title: 'Delete Account',
-    subtitle: '',
-    leading: const Icon(Icons.delete, color: Colors.pink),
-      onTap: () {
-        ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(
-            content: Text("Clicked Delete Account")
-          )
-        );
-      }
-  );
-
   Widget buildReportBug(BuildContext context) => SimpleSettingsTile(
       title: 'Report A Bug',
       subtitle: '',
