@@ -50,8 +50,7 @@ class _NotePageState extends State<NotePage> {
                     hintText: "Title",
                     hintStyle: TextStyle(
                         fontSize: 25,
-                        fontWeight: FontWeight.bold,
-                        color: Colors.black)),
+                        fontWeight: FontWeight.bold)),
                 style:
                     const TextStyle(fontSize: 25, fontWeight: FontWeight.bold),
                 autofocus: true,

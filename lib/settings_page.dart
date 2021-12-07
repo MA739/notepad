@@ -35,7 +35,6 @@ class _SettingsPageState extends State<SettingsPage> {
                 children: <Widget>[
                   buildDarkMode(),
                   buildLogout(),
-                  buildDeleteAccount(),
                 ],
               ),
               const SizedBox(height: 32),
@@ -77,15 +76,6 @@ class _SettingsPageState extends State<SettingsPage> {
                               },
                           child: const Text('Yes'))
                     ]));
-      });
-
-  Widget buildDeleteAccount() => SimpleSettingsTile(
-      title: 'Delete Account',
-      subtitle: '',
-      leading: const Icon(Icons.delete, color: Colors.pink),
-      onTap: () {
-        ScaffoldMessenger.of(context).showSnackBar(
-            const SnackBar(content: Text("Clicked Delete Account")));
       });
 
   Widget buildReportBug(BuildContext context) => SimpleSettingsTile(
