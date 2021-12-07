@@ -32,7 +32,6 @@ class _SettingsPageState extends State<SettingsPage> {
                 children: <Widget>[
                   buildDarkMode(),
                   buildLogout(),
-                  buildDeleteAccount(),
                 ],
             ),
             const SizedBox(height: 32),
