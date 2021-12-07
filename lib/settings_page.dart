@@ -20,6 +20,7 @@ class _SettingsPageState extends State<SettingsPage> {
   Route route = MaterialPageRoute(builder: (context) => const LoginPage());
   Widget build(BuildContext context) => Scaffold(
         appBar: AppBar(
+          backgroundColor: Theme.of(context).brightness == Brightness.dark ? Color(0xFF323F4B) : Colors.blue,
           title: const Text("Settings"),
           centerTitle: true,
           shape: const RoundedRectangleBorder(

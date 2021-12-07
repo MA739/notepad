@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'firestore_service.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:date_format/date_format.dart';
 
 //instantiates a FirebaseService object from file firestore_services.dart
@@ -82,79 +83,107 @@ class RegistrationForm extends StatelessWidget {
   //wall of textfields...
   Widget build(BuildContext context) {
     return Scaffold(
-        body: SingleChildScrollView(
-            child: Center(
-                child: Center(
-                    //padding: EdgeInsets.fromLTRB(0.0, 20.0, 0.0, 0.0,),
-                    child: Column(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-          const Padding(
-              // Even Padding On All Sides
-              padding: EdgeInsets.all(20.0)),
+        body: Container(
+          margin: const EdgeInsets.symmetric(horizontal: 25.0),
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: [
+          Text('Registration',
+            style: GoogleFonts.comfortaa(
+              fontWeight: FontWeight.w500,
+              fontSize: 45.0)),
+          const SizedBox(height: 25),
           //EDIT REGISTRATION PARAMETERS
           TextField(
             //scrollPadding: EdgeInsets.fromTLRB(0.0, 20.0, 0.0, 0.0),
             controller: FNController,
-            decoration: const InputDecoration(
-                border: OutlineInputBorder(), hintText: 'User Name'),
+            decoration: InputDecoration(
+              fillColor: Colors.white10, filled: true,
+              border: OutlineInputBorder(
+                borderSide: const BorderSide(color: Colors.grey),
+                borderRadius: BorderRadius.circular(15.0),
+              ),
+              hintText: 'User Name',
+              hintStyle: const TextStyle(
+                  color: Colors.grey))
           ),
+          const SizedBox(height: 15.0),
           TextField(
             controller: EController,
-            decoration: const InputDecoration(
-                border: OutlineInputBorder(), hintText: 'Email'),
+            decoration: InputDecoration(
+              fillColor: Colors.white10, filled: true,
+              border: OutlineInputBorder(
+                borderSide: const BorderSide(color: Colors.grey),
+                borderRadius: BorderRadius.circular(15.0),
+              ),
+              hintText: 'Email',
+              hintStyle: const TextStyle(
+                  color: Colors.grey)),
           ),
+          const SizedBox(height: 15.0),
           TextField(
             controller: PwController,
             obscureText: true,
-            decoration: const InputDecoration(
-                border: OutlineInputBorder(), hintText: 'Password'),
+            decoration: InputDecoration(
+              fillColor: Colors.white10, filled: true,
+              border: OutlineInputBorder(
+                borderSide: const BorderSide(color: Colors.grey),
+                borderRadius: BorderRadius.circular(15.0),
+              ),
+              hintText: 'Password',
+              hintStyle: const TextStyle(
+                  color: Colors.grey)),
           ),
-          TextButton(
-            style: TextButton.styleFrom(
-              padding: const EdgeInsets.all(16.0),
-              primary: Colors.black,
-              //textStyle: const TextStyle(Fontweight.bold),
-            ),
-            //submit values to firestore
-            onPressed: () => {
-              //email/password authentication here
+          const SizedBox(height: 15.0),
+          SizedBox(
+            height: 50,
+            width: double.infinity,
+            child: ElevatedButton(
+              style: ElevatedButton.styleFrom(
+                elevation: 2,
+                shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(15.0)),
+              ),
+              //submit values to firestore
+              onPressed: () => {
+                //email/password authentication here
 
-              //constructor String FName, String LName, String Email, String Pass, --String UID--, --String Role--
-              //user's data here
-              //service.emailPassSignUp(EController.text, PwController.text),
-              if (FNController.text == "" ||
-                  EController.text == "" ||
-                  PwController.text == "")
-                {
-                  showDialog<String>(
-                    //if password and username match database, allow login and navigate to mainpage (pictures, etc)
-                    //Otherwise send a popup that the login credentials were incorrect
-                    context: context,
-                    builder: (BuildContext context) => AlertDialog(
-                      title: const Text('Login Status'),
-                      content: const Text('Fill out all fields'),
-                      actions: <Widget>[
-                        TextButton(
-                          onPressed: () => {
-                            //navigates back to login page
-                            //Navigator.of(context)..pop()..pop()
-                            Navigator.pop(context, 'OK'),
-                          },
-                          child: const Text('OK'),
-                        ),
-                      ],
-                    ),
-                  )
-                }
-              else
-                {
-                  addUser(FNController.text, EController.text,
-                      PwController.text, context)
-                },
-            },
-            child: const Text('Register'),
+                //constructor String FName, String LName, String Email, String Pass, --String UID--, --String Role--
+                //user's data here
+                //service.emailPassSignUp(EController.text, PwController.text),
+                if (FNController.text == "" ||
+                    EController.text == "" ||
+                    PwController.text == "")
+                  {
+                    showDialog<String>(
+                      //if password and username match database, allow login and navigate to mainpage (pictures, etc)
+                      //Otherwise send a popup that the login credentials were incorrect
+                      context: context,
+                      builder: (BuildContext context) => AlertDialog(
+                        title: const Text('Login Status'),
+                        content: const Text('Fill out all fields'),
+                        actions: <Widget>[
+                          TextButton(
+                            onPressed: () => {
+                              //navigates back to login page
+                              //Navigator.of(context)..pop()..pop()
+                              Navigator.pop(context, 'OK'),
+                            },
+                            child: const Text('OK'),
+                          ),
+                        ],
+                      ),
+                    )
+                  }
+                else
+                  {
+                    addUser(FNController.text, EController.text,
+                        PwController.text, context)
+                  },
+              },
+              child: const Text('Register'),
+            ),
           )
-        ])))));
+        ])));
   }
 }

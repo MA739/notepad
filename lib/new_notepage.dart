@@ -19,6 +19,7 @@ class _NotePageState extends State<NotePage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        backgroundColor: Theme.of(context).brightness == Brightness.dark ? Color(0xFF323F4B) : Colors.blue,
         automaticallyImplyLeading: true,
         title: const Text("New Note"),
         centerTitle: true,
