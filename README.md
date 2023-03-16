@@ -1,12 +1,3 @@
-## Getting Started
+## Notepad
 
-This project is a starting point for a Flutter application.
-
-A few resources to get you started if this is your first Flutter project:
-
-- [Lab: Write your first Flutter app](https://flutter.dev/docs/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://flutter.dev/docs/cookbook)
-
-For help getting started with Flutter, view our
-[online documentation](https://flutter.dev/docs), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+This application allows users to take notes and back them up on the cloud. This app has a registration and login page, which creates and accesses accounts for the cloud backup features. Once the user is in the application, they can create new notes and edit or delete old ones. Users can logout from their account and switch between dark and light modes in the setting page.
